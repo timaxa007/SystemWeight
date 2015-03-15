@@ -1,11 +1,12 @@
 package mods.timaxa007.module.weight;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.event.entity.EntityEvent;
+import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
-import cpw.mods.fml.relauncher.Side;
 
 public class EventWeight {
 	//-------------------------------------------------------------------------V
@@ -16,6 +17,17 @@ public class EventWeight {
 			if (event.entity instanceof EntityPlayer)
 				if (PlayerWeight.get((EntityPlayer)event.entity) == null)
 					PlayerWeight.reg((EntityPlayer)event.entity);
+		}
+
+		@SubscribeEvent
+		public void joinPlayer(EntityJoinWorldEvent event) {
+			if (!event.entity.worldObj.isRemote && event.entity instanceof EntityPlayerMP)
+				if (PlayerWeight.get((EntityPlayer)event.entity) != null) {
+					float weight = PlayerWeight.get((EntityPlayer)event.entity).getWeight();
+					float weight_max = PlayerWeight.get((EntityPlayer)event.entity).getWeightMax();
+					//Fix for Client
+					CoreWeight.network.sendTo(new MessageWeight(weight, weight_max), (EntityPlayerMP)event.entity);
+				}
 		}
 
 	}

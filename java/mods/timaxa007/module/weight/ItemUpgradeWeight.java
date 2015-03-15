@@ -7,6 +7,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
@@ -19,7 +20,19 @@ public class ItemUpgradeWeight extends Item {
 		setCreativeTab(CreativeTabs.tabMisc);
 		setHasSubtypes(true);
 		setMaxDamage(0);
+		setTextureName("weight:upgrades_weights");
 		setUnlocalizedName("upgrades_weights");
+	}
+
+	public String getUnlocalizedName(ItemStack is) {
+		NBTTagCompound nbt = is.getTagCompound();
+		if (nbt != null && nbt.hasKey("WeightUp")) {
+			if (nbt.getShort("WeightUp") < (short)0)
+				return "item.meter";
+			else if (nbt.getShort("WeightUp") == (short)0)
+				return "item.take.upgrades_weights";
+		}
+		return super.getUnlocalizedName();
 	}
 
 	public ItemStack onItemRightClick(ItemStack is, World world, EntityPlayer player) {
@@ -27,16 +40,25 @@ public class ItemUpgradeWeight extends Item {
 		if (nbt == null) nbt = new NBTTagCompound();
 
 		if (PlayerWeight.get(player) != null) {
+
+			float get_weight_max = PlayerWeight.get(player).getWeightMax();
+
 			if (nbt != null && nbt.hasKey("WeightUp")) {
 				if (nbt.getShort("WeightUp") > (short)0) {
 					PlayerWeight.get(player).addWeightMax((float)nbt.getShort("WeightUp"));
 					if (!player.capabilities.isCreativeMode) --is.stackSize;
 				} else if (nbt.getShort("WeightUp") == (short)0) {
-					if (PlayerWeight.get(player).getWeightMax() >= 60.0F && PlayerWeight.get(player).getWeightMax() <= 30000.0F) {
-						short weight_down = (short)(PlayerWeight.get(player).getWeightMax() - 60.0F);
+					if (get_weight_max >= 60.0F && get_weight_max <= 30000.0F) {
+						short weight_down = (short)(get_weight_max - 60.0F);
 						player.inventory.addItemStackToInventory(addNBT(weight_down));
 						PlayerWeight.get(player).addWeightMax(-weight_down);
 					}
+				} else if (nbt.getShort("WeightUp") < (short)0) {
+					if (world.isRemote) player.addChatMessage(new ChatComponentText(
+							StatCollector.translateToLocal("text.get_weight") + ": " + 
+									PlayerWeight.get(player).getWeight() + " / " + 
+									StatCollector.translateToLocal("text.get_weight_max") + ": " + get_weight_max + ".")
+							);
 				}
 			}
 		}
@@ -47,12 +69,13 @@ public class ItemUpgradeWeight extends Item {
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack is, EntityPlayer player, List list, boolean flag) {
 		NBTTagCompound nbt = is.getTagCompound();
-		if (nbt != null && nbt.hasKey("WeightUp"))
+		if (nbt != null && nbt.hasKey("WeightUp") && nbt.getShort("WeightUp") > (short)0)
 			list.add(StatCollector.translateToLocal("text.add_weight") + ": +" + nbt.getShort("WeightUp") + ".");
 	}
 
 	@SideOnly(Side.CLIENT)
 	public void getSubItems(Item id, CreativeTabs table, List list) {
+		list.add(addNBT((short)-1));
 		list.add(addNBT((short)0));
 		list.add(addNBT((short)1));
 		list.add(addNBT((short)2));

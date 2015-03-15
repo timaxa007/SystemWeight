@@ -58,10 +58,10 @@ public class SystemWeight {
 			float weight_max = PlayerWeight.get(player).getWeightMax();
 			double moving = (double)(((weight >= 0.0F && weight <= weight_max) ? (weight_max - weight) : 0.0D) / weight_max);
 
-			if (FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER) {
+			/*if (FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER) {
 				System.out.println(player.getDisplayName() + ":  moving -- " + moving);
 				System.out.println("weight -- " + weight + ", weight_max -- " + weight_max);
-			}
+			}*/
 
 			/** Из-за медленного падения при пустом инвентаре наносить больше урона от падения,<br>
 			 * чем при быстром падении при полу-пустом или полном инвентаре.<br>
