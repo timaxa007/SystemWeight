@@ -1,0 +1,16 @@
+[
+{
+  "modid": "weight",
+  "name": "SystemWeight",
+  "description": "System of Weights.",
+  "version": "0.2a",
+  "mcversion": "1.7.10",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["timaxa007"],
+  "credits": "Create by timaxa007.",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
