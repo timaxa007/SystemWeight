@@ -23,10 +23,10 @@ public class EventWeight {
 		public void joinPlayer(EntityJoinWorldEvent event) {
 			if (!event.entity.worldObj.isRemote && event.entity instanceof EntityPlayerMP)
 				if (PlayerWeight.get((EntityPlayer)event.entity) != null) {
-					float weight = PlayerWeight.get((EntityPlayer)event.entity).getWeight();
+					//float weight = PlayerWeight.get((EntityPlayer)event.entity).getWeight();
 					float weight_max = PlayerWeight.get((EntityPlayer)event.entity).getWeightMax();
 					//Fix for Client
-					CoreWeight.network.sendTo(new MessageWeight(weight, weight_max), (EntityPlayerMP)event.entity);
+					CoreWeight.network.sendTo(new MessageWeight(weight_max), (EntityPlayerMP)event.entity);
 				}
 		}
 

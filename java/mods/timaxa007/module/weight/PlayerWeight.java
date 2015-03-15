@@ -9,17 +9,17 @@ import net.minecraftforge.common.IExtendedEntityProperties;
 public class PlayerWeight implements IExtendedEntityProperties {
 
 	public final static String WEIGHT_NAME = "SystemWeight";
-	private float weight;
+//	private float weight;
 	private float weight_max;
 
 	@Override
 	public void init(Entity entity, World world) {
-		weight = 0.0F;
+//		weight = 0.0F;
 		weight_max = 100.0F;
 	}
 
 	public PlayerWeight() {
-		weight = 0.0F;
+//		weight = 0.0F;
 		weight_max = 100.0F;
 	}
 
@@ -34,7 +34,7 @@ public class PlayerWeight implements IExtendedEntityProperties {
 	@Override
 	public void saveNBTData(NBTTagCompound nbt) {
 		NBTTagCompound nbt_tag = new NBTTagCompound();
-		nbt_tag.setFloat("Weight", weight);
+//		nbt_tag.setFloat("Weight", weight);
 		nbt_tag.setFloat("WeightMax", weight_max);
 		nbt.setTag(WEIGHT_NAME, nbt_tag);
 	}
@@ -42,7 +42,7 @@ public class PlayerWeight implements IExtendedEntityProperties {
 	@Override
 	public void loadNBTData(NBTTagCompound nbt) {
 		NBTTagCompound nbt_tag = (NBTTagCompound)nbt.getTag(WEIGHT_NAME);
-		weight = nbt_tag.getFloat("Weight");
+//		weight = nbt_tag.getFloat("Weight");
 		weight_max = nbt_tag.getFloat("WeightMax");
 	}
 
@@ -57,7 +57,7 @@ public class PlayerWeight implements IExtendedEntityProperties {
 	public float getWeightMax() {
 		return weight_max;
 	}
-
+/*
 	public void setWeight(float weight) {
 		this.weight = weight;
 	}
@@ -65,5 +65,5 @@ public class PlayerWeight implements IExtendedEntityProperties {
 	public float getWeight() {
 		return weight;
 	}
-
+*/
 }

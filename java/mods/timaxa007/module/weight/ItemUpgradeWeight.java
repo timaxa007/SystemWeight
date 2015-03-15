@@ -56,7 +56,7 @@ public class ItemUpgradeWeight extends Item {
 				} else if (nbt.getShort("WeightUp") < (short)0) {
 					if (world.isRemote) player.addChatMessage(new ChatComponentText(
 							StatCollector.translateToLocal("text.get_weight") + ": " + 
-									PlayerWeight.get(player).getWeight() + " / " + 
+									SystemWeight.sendInventory(player) + " / " + 
 									StatCollector.translateToLocal("text.get_weight_max") + ": " + get_weight_max + ".")
 							);
 				}

@@ -10,7 +10,7 @@ import cpw.mods.fml.relauncher.Side;
 
 public class SystemWeight {
 	//--------------------------------------------------------
-	public static void sendInventory(EntityPlayer player) {
+	public static float sendInventory(EntityPlayer player) {
 		float weighting = 0.0F;
 
 		for (ItemStack slot : player.inventory.mainInventory)
@@ -22,7 +22,7 @@ public class SystemWeight {
 		/*if (player.getCurrentEquippedItem() != null)
 			weighting += checkWeighting(player.getCurrentEquippedItem());*/
 
-		PlayerWeight.get(player).setWeight(weighting);
+		return weighting;
 	}
 	//--------------------------------------------------------
 	public static float checkWeighting(ItemStack slot) {
@@ -50,11 +50,9 @@ public class SystemWeight {
 	}
 	//--------------------------------------------------------
 	public static void sumMoving(EntityPlayer player) {
-		if (player != null && player.worldObj != null && PlayerWeight.get(player) != null) {
+		if (player != null && player.worldObj != null && !player.capabilities.isCreativeMode && PlayerWeight.get(player) != null) {
 
-			SystemWeight.sendInventory(player);
-
-			float weight = PlayerWeight.get(player).getWeight();
+			float weight = SystemWeight.sendInventory(player);
 			float weight_max = PlayerWeight.get(player).getWeightMax();
 			double moving = (double)(((weight >= 0.0F && weight <= weight_max) ? (weight_max - weight) : 0.0D) / weight_max);
 
